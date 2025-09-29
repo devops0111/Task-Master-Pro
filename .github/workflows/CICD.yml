@@ -16,7 +16,7 @@ on:
 jobs:
   COMPILE:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
       run: mvn compile
   TEST:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: COMPILE
 
     steps:
@@ -46,7 +46,7 @@ jobs:
       
   PACKAGE:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: TEST
 
     steps:
@@ -62,7 +62,7 @@ jobs:
 
   TRIVY:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: PACKAGE
 
     steps:
@@ -85,7 +85,7 @@ jobs:
       run: trivy fs --format table -o fs-report.html .
   GITLEAKS:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: TRIVY
 
     steps:
@@ -102,7 +102,7 @@ jobs:
       run: gitleaks detect --source . -r fs-gitleaks.json -f json 
 
   SONARQUBE:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: GITLEAKS
     steps:
     - uses: actions/checkout@v4
